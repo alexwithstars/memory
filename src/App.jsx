@@ -1,16 +1,20 @@
 import Card from './components/Card'
 import './App.css'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { useCards } from './hooks/useCards'
+import { Chrono } from './components/Chrono'
+import confetti from 'canvas-confetti'
 
 export default function App () {
   const [cards, setCards] = useCards({ pairs: 8 })
   const firstCard = useRef(null)
   const secondCard = useRef(null)
+  const [started, setStarted] = useState(false)
 
   const handleClick = (id) => {
     if (cards[id].flipped || cards[id].matched) return
     if (firstCard.current && secondCard.current) return
+    if (!started) setStarted(true)
     const newCards = { ...cards }
     if (!firstCard.current) {
       firstCard.current = id
@@ -31,6 +35,14 @@ export default function App () {
         }
         firstCard.current = null
         secondCard.current = null
+        if (Object.values(newCards).every(card => card.matched)) {
+          setStarted(false)
+          confetti({
+            particleCount: 200,
+            spread: 80,
+            origin: { y: 1 }
+          })
+        }
         setCards(newCards)
       }, 1000)
     }
@@ -42,6 +54,7 @@ export default function App () {
       <header>
         <h1 className='title'>Memory</h1>
       </header>
+      <Chrono running={started} />
       <div className='content'>
         <div className='cards'>
           {Object.entries(cards).map(([key, item]) => (
