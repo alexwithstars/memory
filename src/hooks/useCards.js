@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { random } from '../misc/random'
+import { random } from '../misc/misc'
 
 export function useCards ({ pairs }) {
   const [cards, setCards] = useState({})
