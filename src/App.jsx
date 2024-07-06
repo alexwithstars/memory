@@ -1,15 +1,23 @@
 import Card from './components/Card'
 import './App.css'
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { useCards } from './hooks/useCards'
 import { Chrono } from './components/Chrono'
 import confetti from 'canvas-confetti'
+import { Modal } from './components/Modal'
+import { useChrono } from './hooks/useChrono'
 
 export default function App () {
-  const [cards, setCards] = useCards({ pairs: 8 })
+  const [cards, setCards, shuffle] = useCards()
   const firstCard = useRef(null)
   const secondCard = useRef(null)
   const [started, setStarted] = useState(false)
+  const [openModal, setOpenModal] = useState(false)
+  const [time, setRuning] = useChrono()
+
+  useEffect(() => {
+    setRuning(started)
+  }, [started])
 
   const handleClick = (id) => {
     if (cards[id].flipped || cards[id].matched) return
@@ -37,6 +45,7 @@ export default function App () {
         secondCard.current = null
         if (Object.values(newCards).every(card => card.matched)) {
           setStarted(false)
+          setOpenModal(true)
           confetti({
             particleCount: 200,
             spread: 80,
@@ -52,9 +61,17 @@ export default function App () {
   return (
     <div className='contentMain'>
       <header>
-        <h1 className='title'>Memory</h1>
+        <h1 className=' title'>Memory</h1>
       </header>
-      <Chrono running={started} />
+      <Modal
+        open={openModal}
+        time={time}
+        onAction={() => {
+          shuffle()
+          setOpenModal(false)
+        }}
+      />
+      <Chrono time={time} />
       <div className='content'>
         <div className='cards'>
           {Object.entries(cards).map(([key, item]) => (

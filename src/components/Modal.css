@@ -1,0 +1,44 @@
+.modal {
+	display: flex;
+	width: clamp(300px,80%,600px);
+	flex-direction: column;
+	gap: 15px;
+	border-radius: 15px;
+	background-color: #aea;
+	align-items: center;
+	padding: 30px;
+}
+.backdrop {
+	position: fixed;
+	z-index: 2;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: #0008;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.modal-text {
+	font-size: 52px;
+	color: #222;
+	text-align: center;
+}
+
+.modal-button {
+	outline: none;
+	border: none;
+	border-radius: 5px;
+	padding: 8px 12px;
+	font-family: monospace;
+	font-size: 20px;
+	box-shadow: 0 0 5px #8a88;
+	background-color: #eee;
+	cursor: pointer;
+	transition: box-shadow 0.3s;
+	&:hover {
+		box-shadow: 0 2px 5px 3px #8a88;
+	}
+}
