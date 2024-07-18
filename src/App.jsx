@@ -63,6 +63,7 @@ export default function App () {
       <header>
         <h1 className=' title'>Memory</h1>
       </header>
+      <Chrono time={time} />
       <Modal
         open={openModal}
         time={time}
@@ -71,7 +72,6 @@ export default function App () {
           setOpenModal(false)
         }}
       />
-      <Chrono time={time} />
       <div className='content'>
         <div className='cards'>
           {Object.entries(cards).map(([key, item]) => (
